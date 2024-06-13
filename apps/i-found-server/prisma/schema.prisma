@@ -1,0 +1,137 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BusinessUser {
+  businessName     String?
+  city             String?
+  createdAt        DateTime                          @default(now())
+  email            String?
+  id               String                            @id @default(cuid())
+  itemCatalog      Json?
+  phoneNumber      String?
+  promotionCatalog Json?
+  state            String?
+  street           String?
+  subscriptionPlan EnumBusinessUserSubscriptionPlan?
+  updatedAt        DateTime                          @updatedAt
+  vatNumber        String?
+  zipCode          Int?
+}
+
+model CustomerUser {
+  addresses          Json?
+  city               String?
+  createdAt          DateTime @default(now())
+  email              String?
+  fullName           String?
+  id                 String   @id @default(cuid())
+  phoneNumber        String?
+  rewardPoints       Int?
+  savedCards         Json?
+  state              String?
+  street             String?
+  transactionHistory Json?
+  updatedAt          DateTime @updatedAt
+  walletBalance      Float?
+  zipCode            Int?
+}
+
+model Offer {
+  applicableItems    Json?
+  createdAt          DateTime  @default(now())
+  description        String?
+  discountPercentage Float?
+  endDate            DateTime?
+  id                 String    @id @default(cuid())
+  offerTitle         String?
+  quantityLimit      Int?
+  startDate          DateTime?
+  updatedAt          DateTime  @updatedAt
+}
+
+model Order {
+  businessId      String?
+  createdAt       DateTime               @default(now())
+  customerId      String?
+  deliveryAddress String?
+  deliveryFee     Float?
+  deliveryType    EnumOrderDeliveryType?
+  id              String                 @id @default(cuid())
+  items           Json?
+  orderDate       DateTime?
+  orderNumber     String?
+  status          EnumOrderStatus?
+  totalAmount     Float?
+  updatedAt       DateTime               @updatedAt
+}
+
+model Transaction {
+  businessId        String?
+  createdAt         DateTime                      @default(now())
+  customerId        String?
+  id                String                        @id @default(cuid())
+  paymentMethod     EnumTransactionPaymentMethod?
+  receipt           Json?
+  transactionAmount Float?
+  transactionDate   DateTime?
+  updatedAt         DateTime                      @updatedAt
+}
+
+model Item {
+  attributes        Json?
+  category          String?
+  createdAt         DateTime @default(now())
+  description       String?
+  id                String   @id @default(cuid())
+  itemName          String?
+  price             Float?
+  stock             Int?
+  unitOfMeasurement String?
+  updatedAt         DateTime @updatedAt
+}
+
+model RewardPoints {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model UserFeedback {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+enum EnumBusinessUserSubscriptionPlan {
+  Option1
+}
+
+enum EnumOrderDeliveryType {
+  Option1
+}
+
+enum EnumOrderStatus {
+  Option1
+}
+
+enum EnumTransactionPaymentMethod {
+  Option1
+}
